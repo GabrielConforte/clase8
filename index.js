@@ -2,31 +2,28 @@ let db_knex = require("./config/database");
 const expres = require("express");
 let {config} = require("./config");
 let cors = require("cors");
-
 let app = expres();
 let PORT = config.port;
-
 //midleware
 app.use(expres.json());
 app.use(expres.urlencoded({extended:true}));
 app.use(cors("*"));
 
 //routes
-
-
 app.get("/", (req, res) => {
     res.send("Hola Mundo");
     });
+    
         
 app.listen(PORT, () => {
     console.log("Servidor corriendo en el puerto: " + PORT);
 }
 );
 
-// Punto Uno
+
 (async () => {
     try {
-        let existeTabla = false
+        let existeTabla = await db_knex.schema.hasTable("articulos");
         if(!existeTabla){
             await db_knex.schema.createTable("articulos", table =>{
                 table.increments("id").primary(),
@@ -115,11 +112,3 @@ app.listen(PORT, () => {
         console.log(error);
     }
 });
-
-app.get("/", (req, res, next)=>{
-    res.send("Todo Bien!");
-})
-
-app.listen(PORT, err=>{
-    console.log(`Server on http://localhost:${PORT}`);
-})
