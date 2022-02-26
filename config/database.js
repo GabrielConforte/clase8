@@ -1,5 +1,5 @@
-let {db} = require('./index');
-let {knex} = require("knex");
+let {db} = require("./index");
+let knex = require("knex");
 
 let mysql = {
     client: "mysql",
@@ -15,7 +15,7 @@ class Database {
             Database.client = knex(mysql);
             this.client = Database.client;
         }
-        return Database.client;       
+        this.client = Database.client;       
     }
 }
 module.exports = new Database().client;
